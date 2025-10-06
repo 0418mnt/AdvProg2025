@@ -136,11 +136,23 @@
             }
         }
 
+        // ★★★ 追加する機能: 操作説明をキャンバスに描画する関数 ★★★
+        function drawInstructions() {
+            ctx.font = "16px Arial";
+            ctx.fillStyle = "#333333";
+            ctx.textAlign = "center";
+            // キャンバスの中央上部に表示
+            ctx.fillText("矢印キー(← →)でパドルを操作", canvas.width / 2, 20); 
+        }
+
         // メインの描画ループ
         function draw() {
             // 前のフレームをクリア
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+            // ★★★ 追加する機能: 毎フレーム、操作説明を描画する ★★★
+            drawInstructions();
+            
             // 各要素の描画
             drawBricks();
             drawBall();
