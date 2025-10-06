@@ -6,21 +6,12 @@
         /* CSSセクション: スタイルを定義 */
         body {
             display: flex;
-            /* 縦に並べるためにflex-directionをcolumnに */
-            flex-direction: column; 
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
-        }
-        /* メッセージ用のスタイル */
-        #message {
-            margin-bottom: 10px; /* キャンバスとの間に少しスペースを空ける */
-            font-size: 18px;
-            color: #333;
-            font-weight: bold;
         }
         #gameCanvas {
             background: #eee;
@@ -30,10 +21,6 @@
     </style>
 </head>
 <body>
-
-    <div id="message">
-        矢印キー(← →)を動かして操作
-    </div>
 
     <canvas id="gameCanvas" width="480" height="320"></canvas>
 
@@ -149,11 +136,23 @@
             }
         }
 
+        // ★★★ 操作説明をキャンバスに描画する関数 ★★★
+        function drawInstructions() {
+            ctx.font = "16px Arial";
+            ctx.fillStyle = "#333333";
+            ctx.textAlign = "center";
+            // キャンバスの中央上部に表示
+            ctx.fillText("矢印キー(← →)でパドルを操作", canvas.width / 2, 20); 
+        }
+
         // メインの描画ループ
         function draw() {
             // 前のフレームをクリア
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+            // ★★★ 毎フレーム、操作説明を描画する ★★★
+            drawInstructions();
+            
             // 各要素の描画
             drawBricks();
             drawBall();
@@ -182,3 +181,19 @@
                 paddleX += 7;
             } else if (leftPressed && paddleX > 0) {
                 paddleX -= 7;
+            }
+
+            // ボールを次の位置へ移動
+            x += dx;
+            y += dy;
+
+            // 繰り返し描画 (ゲームループ)
+            requestAnimationFrame(draw);
+        }
+
+        // ゲーム開始
+        draw();
+        // === JavaScriptコードはここまで ===
+    </script>
+</body>
+</html>
