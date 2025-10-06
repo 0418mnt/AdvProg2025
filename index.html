@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <title>シンプルなブロック崩し</title>
@@ -136,7 +136,7 @@
             }
         }
 
-        // 操作説明をキャンバスに描画する関数
+
         function drawInstructions() {
             ctx.font = "16px Arial";
             ctx.fillStyle = "#333333";
@@ -144,5 +144,53 @@
             // キャンバスの中央上部に表示
             ctx.fillText("矢印キー(← →)でパドルを操作", canvas.width / 2, 20); 
         }
+        
+        // メインの描画ループ
+        function draw() {
+            // 前のフレームをクリア
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        //
+            // 各要素の描画
+            drawBricks();
+            drawBall();
+            drawPaddle();
+            collisionDetection();
+
+            // ボールの移動と衝突判定 (壁)
+            if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+                dx = -dx; // 左右の壁で反転
+            }
+            if (y + dy < ballRadius) {
+                dy = -dy; // 上の壁で反転
+            } else if (y + dy > canvas.height - ballRadius) {
+                // ボールが底に到達した場合
+                if (x > paddleX && x < paddleX + paddleWidth) {
+                    dy = -dy; // パドルに当たったら反転
+                } else {
+                    alert("GAME OVER"); // ゲームオーバー
+                    document.location.reload(); // ページをリロードして最初から
+                    return;
+                }
+            }
+
+            // パドルの移動
+            if (rightPressed && paddleX < canvas.width - paddleWidth) {
+                paddleX += 7;
+            } else if (leftPressed && paddleX > 0) {
+                paddleX -= 7;
+            }
+
+            // ボールを次の位置へ移動
+            x += dx;
+            y += dy;
+
+            // 繰り返し描画 (ゲームループ)
+            requestAnimationFrame(draw);
+        }
+
+        // ゲーム開始
+        draw();
+        // === JavaScriptコードはここまで ===
+    </script>
+</body>
+</html>
